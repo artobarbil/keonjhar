@@ -38,8 +38,8 @@
 	<p id="total"></p>
 	<p id="after_exept_penalty"></p>
 	<p id="interest"></p>
-	<p id="total"></p>
-	<p id="error"></p>
+	<p id="gtotal"></p>
+	
   </div>
 </div>
 
@@ -121,7 +121,7 @@
 		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
 		document.getElementById('after_exept_penalty').innerText = `penalty payble: ${penalty_payble}`;
 		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
-		document.getElementById('total').innerText = `Total payble amount: ${total}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
   }
 	else if(parseInt(document.getElementById('RLW').value) === rlw_1500)
