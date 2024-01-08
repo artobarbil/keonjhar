@@ -38,8 +38,9 @@
 	<p id="total"></p>
 	<p id="penaly_exep"></p>
 	<p id="after_exept_penalty"></p>
+	<p id="Payble_without_interest"></p>
 	<p id="interest"></p>
-	<p id="gtotal"></p>
+	<p style = "color:red;"id="gtotal"></p>
 	
   </div>
 </div>
@@ -116,21 +117,449 @@
 			if (diff_q >0){interest = (diff_q*rlw_amt_16200)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
-		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_16200}`
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_16200}`;
 		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
 		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
 		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
 		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
 		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
 		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
 		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
   }
-	else if(parseInt(document.getElementById('RLW').value) === rlw_18500)
+		else if (parseInt(document.getElementById('RLW').value) === rlw_18500)
 	{
-	const tax_amt = rlw_amt_18500 * quarters;
+		const tax_amt = rlw_amt_18500 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_18500 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_18500 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_18500) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_18500)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_18500}`;
 		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
-	}
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_25000)
+	{
+		const tax_amt = rlw_amt_25000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_25000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_25000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_25000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_25000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_25000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_28000)
+	{
+		const tax_amt = rlw_amt_28000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_28000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_28000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_28000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_28000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_28000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_31000)
+	{
+		const tax_amt = rlw_amt_31000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_31000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_31000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_31000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_31000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_31000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_35000)
+	{
+		const tax_amt = rlw_amt_35000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_35000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_35000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_35000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_35000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_35000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_37000)
+	{
+		const tax_amt = rlw_amt_37000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_37000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_37000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_37000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_37000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_37000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_42000)
+	{
+		const tax_amt = rlw_amt_42000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_42000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_42000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_42000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_42000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_42000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_43000)
+	{
+		const tax_amt = rlw_amt_43000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_43000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_43000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_43000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_43000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_43000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_49000)
+	{
+		const tax_amt = rlw_amt_49000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_49000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_49000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_49000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_49000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_49000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_art_35200)
+	{
+		const tax_amt = rlw_amt_art_35200 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_35200 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_35200 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_35200) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_35200)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_35200}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_39500)
+	{
+		const tax_amt = rlw_amt_art_39500 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_39500 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_39500 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_39500) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_39500)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_39500}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_40200)
+	{
+		const tax_amt = rlw_amt_art_40200 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_40200 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_40200 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_40200) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_40200)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_40200}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_45500)
+	{
+		const tax_amt = rlw_amt_art_45500 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_45500 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_45500 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_45500) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_45500)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_45500}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_44000)
+	{
+		const tax_amt = rlw_amt_art_44000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_44000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_44000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_44000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_44000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_44000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_49000)
+	{
+		const tax_amt = rlw_amt_art_49000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_49000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_49000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_49000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_49000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_49000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+	else if (parseInt(document.getElementById('RLW').value) === rlw_art_55000)
+	{
+		const tax_amt = rlw_amt_art_55000 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_art_55000 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_art_55000 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_art_55000) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_49000)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_55000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
     else {alert("Tax slab not found");}
 	}
 </script>
