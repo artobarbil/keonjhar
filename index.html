@@ -63,7 +63,7 @@
 	const rlw_amt_42000 = 11500;
 	const rlw_amt_43000 = 12000;
 	const rlw_amt_49000 = 15000;
-	  const rlw_amt_47500 = 14250;
+	const rlw_amt_47500 = 14250;
 	const rlw_amt_art_35200 = 8000;
 	const rlw_amt_art_39500 = 10250;
 	const rlw_amt_art_40200 = 10500;
@@ -71,6 +71,7 @@
 	const rlw_amt_art_44000 = 12500;
 	const rlw_amt_art_49000 = 15000;
 	const rlw_amt_art_55000 = 18000;
+	
 	
 	const rlw_16200 = 16200;
 	const rlw_18500 = 18500;
@@ -562,7 +563,34 @@
 		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
   }
-		else if (parseInt(document.getElementById('RLW').value) === rlw_47500)
+	else if (parseInt(document.getElementById('RLW').value) === rlw_18500)
+	{
+		const tax_amt = rlw_amt_18500 * quarters;
+			if(quarters <=1 )
+			{
+		penalty = (rlw_amt_18500 * quarters)/2;
+		}
+			else if (quarters >=2)
+			{
+		penalty = (rlw_amt_18500 * quarters) * 2;
+		}
+			diff_q = quarters - q ;
+			penalty_payble = (q * rlw_amt_18500) * 2 ;
+			if (diff_q >0){interest = (diff_q*rlw_amt_18500)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_18500}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+  else if (parseInt(document.getElementById('RLW').value) === rlw_47500)
 	{
 		const tax_amt = rlw_amt_47500 * quarters;
 			if(quarters <=1 )
