@@ -94,7 +94,7 @@
     const startDate = new Date(document.getElementById('startDate').value);
     const endDate = new Date(document.getElementById('endDate').value);
 	const date = new Date("01-04-2022");
-	const date1 = new Date("01-01-2010");
+	const date1 = new Date("01-04-2010");
     // Calculate the difference in months
     const monthsDiff = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
 	const m = (endDate.getFullYear() - date.getFullYear()) * 12 + (endDate.getMonth() - date.getMonth());
@@ -103,6 +103,25 @@
     const quarters = Math.floor(monthsDiff / 3+1);
 	const q = Math.floor(m / 3);
 	const q1 = Math.floor(m1 / 3+1);
+	
+var today = new Date();
+var cquarter = Math.floor((today.getMonth() + 3) / 3)-1;
+var nextq;
+if (cquarter == 4) {
+    nextq = new Date (today.getFullYear() + 1, 1, 1);
+} else {
+    nextq = new Date (today.getFullYear(), cquarter*3 , 1);
+}
+var millis1 = today.getTime();
+var millis2 = nextq.getTime();
+var daydiff = Math.round((millis1 - millis2) / 1000 / 60 / 60 / 24);
+var cpenalty ;
+if (daydiff < 15){cpenalty = 0;}
+else if (daydiff >15 && daydiff <32){cpenalty = .25;}
+else if (daydiff >3 && daydiff <46){cpenalty = .50;}
+else if (daydiff >46 && daydiff <76){cpenalty = 1;}
+else if (daydiff >76){cpenalty = 2;}
+
 	if ((document.getElementById('RLW').value) === "" ) 
 	{alert("Please fill in the input field.");}
 	
@@ -110,16 +129,11 @@
 	if (parseInt(document.getElementById('RLW').value) === rlw_16200 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_16200 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_16200 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_16200 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_16200 * (quarters-1))*2)+(rlw_amt_16200*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_16200) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_16200) * 2)+ (rlw_amt_16200*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_16200)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -137,16 +151,11 @@
 		else if (parseInt(document.getElementById('RLW').value) === rlw_18500 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_18500 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_18500 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_18500 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_18500 * (quarters-1))*2)+(rlw_amt_18500*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_18500) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_18500) * 2)+ (rlw_amt_18500*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_18500)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -164,16 +173,11 @@
   else if (parseInt(document.getElementById('RLW').value) === rlw_25000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_25000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_25000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_25000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_25000 * (quarters-1))*2)+(rlw_amt_25000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_25000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_25000) * 2)+ (rlw_amt_25000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_25000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -191,16 +195,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_28000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_28000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_28000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_28000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_28000 * (quarters-1))*2)+(rlw_amt_28000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_28000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_28000) * 2)+ (rlw_amt_28000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_28000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -218,16 +217,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_31000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_31000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_31000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_31000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_31000 * (quarters-1))*2)+(rlw_amt_31000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_31000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_31000) * 2)+ (rlw_amt_31000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_31000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -245,16 +239,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_35000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_35000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_35000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_35000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_35000 * (quarters-1))*2)+(rlw_amt_35000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_35000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_35000) * 2)+ (rlw_amt_35000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_35000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -272,16 +261,11 @@
   else if (parseInt(document.getElementById('RLW').value) === rlw_37000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_37000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_37000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_37000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_37000 * (quarters-1))*2)+(rlw_amt_37000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_37000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_37000) * 2)+ (rlw_amt_37000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_37000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -299,16 +283,11 @@
   else if (parseInt(document.getElementById('RLW').value) === rlw_42000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_42000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_42000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_42000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_42000 * (quarters-1))*2)+(rlw_amt_42000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_42000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_42000) * 2)+ (rlw_amt_42000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_42000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -326,16 +305,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_43000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_43000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_43000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_43000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_43000 * (quarters-1))*2)+(rlw_amt_43000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_43000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_43000) * 2)+ (rlw_amt_43000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_43000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -353,16 +327,11 @@
   else if (parseInt(document.getElementById('RLW').value) === rlw_49000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_49000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_49000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_49000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_49000 * (quarters-1))*2)+(rlw_amt_49000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_49000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_49000) * 2)+ (rlw_amt_49000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_49000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -380,16 +349,11 @@
   else if (parseInt(document.getElementById('RLW').value) === rlw_art_35200 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_35200 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_35200 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_35200 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_35200 * (quarters-1))*2)+(rlw_amt_art_35200*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_35200) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_35200) * 2)+ (rlw_amt_art_35200*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_35200)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -407,16 +371,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_39500 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_39500 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_39500 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_39500 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_39500 * (quarters-1))*2)+(rlw_amt_art_39500*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_39500) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_39500) * 2)+ (rlw_amt_art_39500*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_39500)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -434,16 +393,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_40200 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_40200 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_40200 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_40200 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_40200 * (quarters-1))*2)+(rlw_amt_art_40200*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_40200) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_40200) * 2)+ (rlw_amt_art_40200*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_40200)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -461,16 +415,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_45500 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_45500 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_45500 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_45500 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_45500 * (quarters-1))*2)+(rlw_amt_art_45500*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_45500) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_45500) * 2)+ (rlw_amt_art_45500*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_45500)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -488,16 +437,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_44000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_44000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_44000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_44000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_44000 * (quarters-1))*2)+(rlw_amt_art_44000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_44000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_44000) * 2)+ (rlw_amt_art_44000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_44000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -515,16 +459,11 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_49000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_49000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_49000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_49000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_49000 * (quarters-1))*2)+(rlw_amt_art_49000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_49000) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_art_49000) * 2)+ (rlw_amt_art_49000*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_art_49000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
@@ -542,17 +481,12 @@
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_55000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_55000 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_art_55000 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_art_55000 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_art_55000 * (quarters-1))*2)+(rlw_amt_art_55000*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_art_55000) * 2 ;
-			if (diff_q >0){interest = (diff_q*rlw_amt_art_49000)*12/100;}
+			penalty_payble = (((q-1 )* rlw_amt_art_55000) * 2)+ (rlw_amt_art_55000*cpenalty);
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_55000)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
 		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_55000}`;
@@ -566,46 +500,15 @@
 		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
   }
-	else if (parseInt(document.getElementById('RLW').value) === rlw_18500 && startDate >=date1)
-	{
-		const tax_amt = rlw_amt_18500 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_18500 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_18500 * quarters) * 2;
-		}
-			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_18500) * 2 ;
-			if (diff_q >0){interest = (diff_q*rlw_amt_18500)*12/100;}
-			total = tax_amt + penalty_payble + interest ;
-		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
-		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_18500}`;
-		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
-		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
-		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
-		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
-		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
-		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
-		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
-		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
-  }
   else if (parseInt(document.getElementById('RLW').value) === rlw_47500 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_47500 * quarters;
-			if(quarters <=1 )
-			{
-		penalty = (rlw_amt_47500 * quarters)/2;
-		}
-			else if (quarters >=2)
-			{
-		penalty = (rlw_amt_47500 * quarters) * 2;
-		}
+			
+		penalty = ((rlw_amt_47500 * (quarters-1))*2)+(rlw_amt_47500*cpenalty);
+		
 			diff_q = quarters - q ;
-			penalty_payble = (q * rlw_amt_47500) * 2 ;
+			penalty_payble = (((q-1 )* rlw_amt_47500) * 2)+ (rlw_amt_47500*cpenalty);
 			if (diff_q >0){interest = (diff_q*rlw_amt_47500)*12/100;}
 			total = tax_amt + penalty_payble + interest ;
 		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
