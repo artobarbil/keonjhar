@@ -71,6 +71,7 @@
 	const rlw_amt_art_45500 = 13250;
 	const rlw_amt_art_44000 = 12500;
 	const rlw_amt_art_49000 = 15000;
+	 const rlw_amt_art_54000 = 17500;
 	const rlw_amt_art_55000 = 18000;
 	
 	
@@ -91,6 +92,7 @@
 	const rlw_art_45500 = 45500;
 	const rlw_art_44000 = 44000;
 	const rlw_art_49000 = 49000;
+	const rlw_art_54000 = 54000;
 	const rlw_art_55000 = 55000;
     const startDate = new Date(document.getElementById('startDate').value);
     const endDate = new Date(document.getElementById('endDate').value);
@@ -482,6 +484,29 @@ else {cpenalty = 0;}
 		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
 	
   }
+		else if (parseInt(document.getElementById('RLW').value) === rlw_art_54000 && startDate >=date1)
+	{
+		const tax_amt = rlw_amt_art_54000 * quarters;
+			
+		penalty = ((rlw_amt_art_54000 * (quarters-q2))*2)+(rlw_amt_art_54000*cpenalty);
+		
+			diff_q = quarters - q ;
+			penalty_payble = (((q-q2 )* rlw_amt_art_54000) * 2)+ (rlw_amt_art_54000*cpenalty);
+			if (diff_q >0){interest = (diff_q*rlw_amt_art_35200)*12/100;}
+			total = tax_amt + penalty_payble + interest ;
+		document.getElementById('result').innerText = `Number of Quarters: ${quarters}`;
+		document.getElementById('base').innerText = `Tax for quarter: ${rlw_amt_art_54000}`;
+		document.getElementById('Tax').innerText = `Amount of tax: ${tax_amt}`;
+		document.getElementById('penalty').innerText = `Penalty: ${penalty}`;
+		document.getElementById('total').innerText = `Total: ${penalty+tax_amt}`;
+		document.getElementById('penaly_exep').innerText = `Waived penalty: ${penalty - penalty_payble}`;
+		document.getElementById('after_exept_penalty').innerText = `Payble penalty: ${penalty_payble}`;
+		document.getElementById('Payble_without_interest').innerText = `Tax & Penalty to be collected: ${tax_amt+ penalty_payble}`;
+		document.getElementById('interest').innerText = `Interest payble @12 %: ${interest}`;
+		document.getElementById('gtotal').innerText = `Total payble amount: ${total}`;
+	
+  }
+
 	else if (parseInt(document.getElementById('RLW').value) === rlw_art_55000 && startDate >=date1)
 	{
 		const tax_amt = rlw_amt_art_55000 * quarters;
