@@ -123,10 +123,10 @@ var millis2 = nextq.getTime();
 var daydiff = Math.round((millis1 - millis2) / 1000 / 60 / 60 / 24);
 var cpenalty ;
 if (daydiff < 15){cpenalty = 0;}
-else if (daydiff >15 && daydiff <32){cpenalty = .25;}
-else if (daydiff >32 && daydiff <46){cpenalty = .50;}
-else if (daydiff >46 && daydiff <76){cpenalty = 1;}
-else if (daydiff >76 && daydiff <93){cpenalty = 2;}
+else if (daydiff >15 && daydiff <=31){cpenalty = .25;}
+else if (daydiff >=31 && daydiff <45){cpenalty = .50;}
+else if (daydiff >=45 && daydiff <75){cpenalty = 1;}
+else if (daydiff >=75 && daydiff <92){cpenalty = 2;}
 else {cpenalty = 0;}
 	if ((document.getElementById('RLW').value) === "" ) 
 	{alert("Please fill in the input field.");}
