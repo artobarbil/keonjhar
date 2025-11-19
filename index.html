@@ -47,4 +47,114 @@
         <option value="39500">39500 kg</option>
         <option value="40200">40200 kg</option>
         <option value="44000">44000 kg</option>
-        <option value
+        <option value="45500">45500 kg</option>
+        <option value="54000">54000 kg</option>
+        <option value="55000">55000 kg</option>
+      </select>
+    </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-primary me-2" onclick="calculateTax()">Calculate Tax</button>
+      <input type="reset" class="btn btn-secondary" value="Reset">
+    </div>
+  </form>
+
+  <div class="mt-4 result-box">
+    <h4>Result:</h4>
+    <div id="output"></div>
+  </div>
+</div>
+
+<script>
+// --------- UTC SAFE DATE CREATOR ----------
+function makeDate(y, m, d) {
+  return new Date(Date.UTC(y, m - 1, d));
+}
+
+// --------- PENALTY CALCULATION LOGIC ----------
+function calculatePenalty(endDate) {
+
+  // FIXED "TODAY" DATE
+  const today = makeDate(2025, 11, 19);
+
+  const y = endDate.getUTCFullYear();
+  const m = endDate.getUTCMonth() + 1;
+
+  let qStart;
+
+  if (m >= 1 && m <= 3) qStart = makeDate(y, 1, 1);
+  else if (m >= 4 && m <= 6) qStart = makeDate(y, 4, 1);
+  else if (m >= 7 && m <= 9) qStart = makeDate(y, 7, 1);
+  else qStart = makeDate(y, 10, 1);  // <-- Your case (Oct–Dec)
+
+  // Days delayed from quarter start
+  const msDiff = today - qStart;
+  const daysLate = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+
+  // Apply penalty slab
+  let penaltyRate = 0;
+  if (daysLate >= 15 && daysLate <= 30) penaltyRate = 0.25;
+  else if (daysLate >= 31 && daysLate <= 45) penaltyRate = 0.50;
+  else if (daysLate >= 46 && daysLate <= 60) penaltyRate = 1.00;  // 100%
+  else if (daysLate > 60) penaltyRate = 2.00;  // 200%
+
+  return { daysLate, penaltyRate, qStart };
+}
+
+
+// --------- MAIN TAX CALCULATOR ----------
+function calculateTax() {
+
+  const rlw = parseInt(document.getElementById("RLW").value);
+  const startDate = new Date(document.getElementById("startDate").value);
+  const endDate = new Date(document.getElementById("endDate").value);
+  const output = document.getElementById("output");
+
+  output.innerHTML = "";
+
+  if (!rlw || !startDate || !endDate || startDate > endDate) {
+    alert("Please enter valid dates and RLW.");
+    return;
+  }
+
+  const rlwRates = {
+    16200: 2610, 18500: 4750, 25000: 4750, 28000: 6500,
+    31000: 6500, 35000: 8000, 37000: 9000, 42000: 11500,
+    43000: 12000, 47500: 14250, 49000: 15000, 35200: 8000,
+    39500: 10250, 40200: 10500, 44000: 12500, 45500: 13250,
+    54000: 17500, 55000: 18000
+  };
+
+  const rate = rlwRates[rlw];
+
+  // Count quarters between dates
+  const sY = startDate.getFullYear(), sQ = Math.floor(startDate.getMonth() / 3);
+  const eY = endDate.getFullYear(), eQ = Math.floor(endDate.getMonth() / 3);
+
+  const quarters = (eY - sY) * 4 + (eQ - sQ) + 1;
+
+  // ---- GET PENALTY ----
+  const penalty = calculatePenalty(endDate);
+  const daysLate = penalty.daysLate;
+  const penaltyRate = penalty.penaltyRate;
+
+  const taxAmount = rate * quarters;
+  const penaltyAmount = taxAmount * penaltyRate;
+  const total = taxAmount + penaltyAmount;
+
+  output.innerHTML = `
+    <p><strong>Quarters:</strong> ${quarters}</p>
+    <p><strong>Tax per Quarter:</strong> ₹${rate}</p>
+    <p><strong>Total Tax:</strong> ₹${taxAmount}</p>
+    <p><strong>Quarter Start:</strong> ${penalty.qStart.toISOString().slice(0,10)}</p>
+    <p><strong>Days Late:</strong> ${daysLate}</p>
+    <p><strong>Penalty Rate:</strong> ${(penaltyRate * 100)}%</p>
+    <p><strong>Penalty Amount:</strong> ₹${penaltyAmount}</p>
+    <hr>
+    <h4 class="text-danger"><strong>Total Payable: ₹${total}</strong></h4>
+  `;
+}
+</script>
+
+</body>
+</html>
