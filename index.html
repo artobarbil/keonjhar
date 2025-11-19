@@ -1,238 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OTS Tax Calculator (HGV) — Quarter-start Penalty</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTS Tax Calculator (HGV)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background:#f8f9fa; }
-    .result-box { background:#fff; padding:18px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.08); }
-    .monospace { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; }
-    @media (max-width:575px){ .table-responsive { font-size:13px; } }
+    .result-box { background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    table { background:white; }
   </style>
 </head>
 <body>
-<div class="container my-5">
-  <h2 class="mb-4 text-center">🚛 OTS Tax Calculator (HGV)</h2>
+<div class="container mt-5">
 
-  <form id="taxForm" class="border rounded p-4 bg-white shadow-sm">
-    <div class="row g-3">
-      <div class="col-md-6">
+  <h2 class="mb-4 text-center">🚛 Tax Calculator (HGV)</h2>
+
+  <form class="border rounded p-4 bg-white shadow-sm">
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Tax From:</label>
         <input type="date" class="form-control" id="startDate" required>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 mb-3">
         <label class="form-label">Tax Up To:</label>
         <input type="date" class="form-control" id="endDate" required>
       </div>
+    </div>
 
-      <div class="col-12">
-        <label class="form-label">Select RLW (kg):</label>
-        <select class="form-select" id="RLW" required>
-          <option value="">-- Select RLW --</option>
-          <option value="16200">16200 kg</option>
-          <option value="18500">18500 kg</option>
-          <option value="25000">25000 kg</option>
-          <option value="28000">28000 kg</option>
-          <option value="31000">31000 kg</option>
-          <option value="35000">35000 kg</option>
-          <option value="37000">37000 kg</option>
-          <option value="42000">42000 kg</option>
-          <option value="43000">43000 kg</option>
-          <option value="47500">47500 kg</option>
-          <option value="49000">49000 kg</option>
-          <option value="35200">35200 kg</option>
-          <option value="39500">39500 kg</option>
-          <option value="40200">40200 kg</option>
-          <option value="44000">44000 kg</option>
-          <option value="45500">45500 kg</option>
-          <option value="54000">54000 kg</option>
-          <option value="55000">55000 kg</option>
-        </select>
-      </div>
+    <div class="mb-3">
+      <label class="form-label">Select RLW (kg):</label>
+      <select class="form-select" id="RLW" required>
+        <option value="">-- Select RLW --</option>
+        <option value="2610">16200 kg</option>
+        <option value="4750">18500 kg</option>
+        <option value="4750">25000 kg</option>
+        <option value="6500">28000 kg</option>
+        <option value="6500">31000 kg</option>
+        <option value="8000">35000 kg</option>
+        <option value="9000">37000 kg</option>
+        <option value="11500">42000 kg</option>
+        <option value="12000">43000 kg</option>
+        <option value="14250">47500 kg</option>
+        <option value="15000">49000 kg</option>
+        <option value="8000">35200 kg</option>
+        <option value="10250">39500 kg</option>
+        <option value="10500">40200 kg</option>
+        <option value="12500">44000 kg</option>
+        <option value="13250">45500 kg</option>
+        <option value="17500">54000 kg</option>
+        <option value="18000">55000 kg</option>
+      </select>
+    </div>
 
-      <div class="col-12 text-center mt-2">
-        <button type="button" class="btn btn-primary me-2" onclick="calculateTax()">Calculate Tax</button>
-        <input type="reset" class="btn btn-secondary" value="Reset" onclick="clearOutput()">
-      </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary me-2" onclick="calculateTax()">Calculate Tax</button>
+      <input type="reset" class="btn btn-secondary" value="Reset">
     </div>
   </form>
 
   <div class="mt-4 result-box">
-    <h5>Result</h5>
+    <h4>Result:</h4>
     <div id="output"></div>
   </div>
 </div>
 
 <script>
-/* -------------------------
-   Configuration / Helpers
-   ------------------------- */
-
-// UTC-safe date creator (year, month (1-12), day)
-function makeDateUTC(y, m, d) {
-  return new Date(Date.UTC(y, m - 1, d));
-}
-
-// Format money in Indian style with rupee symbol
-const moneyFmt = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
-
-// Tax rate lookup by RLW
-const RLW_RATES = {
-  16200: 2610, 18500: 4750, 25000: 4750, 28000: 6500,
-  31000: 6500, 35000: 8000, 37000: 9000, 42000: 11500,
-  43000: 12000, 47500: 14250, 49000: 15000,
-  35200: 8000, 39500: 10250, 40200: 10500, 44000: 12500,
-  45500: 13250, 54000: 17500, 55000: 18000
-};
-
-// Penalty slab by days passed (from quarter START)
-function slabRateByDays(daysPassed) {
-  if (daysPassed >= 15 && daysPassed <= 30) return 0.25;
-  if (daysPassed >= 31 && daysPassed <= 45) return 0.50;
-  if (daysPassed >= 46 && daysPassed <= 60) return 1.00;
-  if (daysPassed > 60) return 2.00;
-  return 0.0;
-}
-
-// Returns quarter start date (UTC) for given year and quarter-index (0..3)
-function quarterStartUTC(year, quarterIndex) {
-  // Q0 -> Jan-Mar starts Jan 1, Q1 -> Apr 1, Q2 -> Jul 1, Q3 -> Oct 1 (we'll name them Q1..Q4 later)
-  const monthStart = [1, 4, 7, 10][quarterIndex];
-  return makeDateUTC(year, monthStart, 1);
-}
-
-// Return quarter index (0..3) for a JS Date (use UTC month)
-function quarterIndexFromDateUTC(date) {
-  const m = date.getUTCMonth(); // 0..11
-  return Math.floor(m / 3);     // 0..3
-}
-
-/* -------------------------
-   Main Calculation
-   ------------------------- */
-
 function calculateTax() {
-  const rlwVal = document.getElementById('RLW').value;
-  const startInput = document.getElementById('startDate').value;
-  const endInput = document.getElementById('endDate').value;
-  const output = document.getElementById('output');
-  output.innerHTML = '';
+  const rate = parseInt(document.getElementById("RLW").value);
+  const start = new Date(document.getElementById("startDate").value);
+  const end = new Date(document.getElementById("endDate").value);
+  const output = document.getElementById("output");
+  output.innerHTML = "";
 
-  if (!rlwVal || !startInput || !endInput) {
-    alert('Please select RLW and both dates.');
+  if (!rate || !start || !end || start > end) {
+    alert("Please enter valid dates and RLW.");
     return;
   }
 
-  const rlw = parseInt(rlwVal, 10);
-  const rate = RLW_RATES[rlw];
-  if (!rate) {
-    alert('Selected RLW not supported.');
-    return;
+  // FIXED TODAY DATE AS PER YOUR REQUIREMENT
+  const today = new Date("2025-11-19");
+
+  let quarters = [];
+  let sYear = start.getFullYear();
+  let sMonth = start.getMonth() + 1; // correct month 1–12
+  let sQ = Math.floor((sMonth - 1) / 3);
+
+  let eYear = end.getFullYear();
+  let eMonth = end.getMonth() + 1;
+  let eQ = Math.floor((eMonth - 1) / 3);
+
+  let totalQ = (eYear - sYear) * 4 + (eQ - sQ) + 1;
+
+  for (let i = 0; i < totalQ; i++) {
+    let qIndex = sQ + i;
+    let year = sYear + Math.floor(qIndex / 4);
+    let quarter = qIndex % 4;
+
+    let qStartMonth = quarter * 3 + 1;            // 1,4,7,10
+    let qEndMonth = qStartMonth + 2;              // Mar, Jun, Sep, Dec
+
+    let qStartDate = new Date(year, qStartMonth - 1, 1);
+    let qEndDate = new Date(year, qEndMonth, 0);
+
+    // SKIP extra quarters before selected start date
+    if (qStartDate < start) qStartDate = start;
+    // SKIP extra quarters after selected end date
+    if (qEndDate > end) qEndDate = end;
+
+    // Delay = today - quarter start date (YOUR RULE)
+    let daysLate = Math.floor((today - qStartDate) / (1000 * 60 * 60 * 24));
+    if (daysLate < 0) daysLate = 0;
+
+    // Penalty Slabs
+    let penaltyRate = 0;
+    if (daysLate >= 15 && daysLate <= 30) penaltyRate = 0.25;
+    else if (daysLate >= 31 && daysLate <= 45) penaltyRate = 0.50;
+    else if (daysLate >= 46 && daysLate <= 60) penaltyRate = 1.00;
+    else if (daysLate > 60) penaltyRate = 2.00;
+
+    let tax = rate;
+    let penalty = rate * penaltyRate;
+
+    quarters.push({
+      q: quarter + 1,
+      year: year,
+      start: qStartDate.toISOString().split("T")[0],
+      daysLate: daysLate,
+      penaltyRate: penaltyRate * 100,
+      penalty: penalty,
+      tax: tax
+    });
   }
 
-  // Parse input dates as local midnight; convert to UTC Date objects anchored at midnight UTC of same date
-  // We'll compute quarters using UTC functions to avoid timezone drift.
-  const startLocal = new Date(startInput + 'T00:00:00');
-  const endLocal   = new Date(endInput   + 'T00:00:00');
-
-  // Compute quarter indices (UTC-based) for start and end
-  const sYear = startLocal.getUTCFullYear();
-  const sQ = quarterIndexFromDateUTC(startLocal); // 0..3
-
-  const eYear = endLocal.getUTCFullYear();
-  const eQ = quarterIndexFromDateUTC(endLocal); // 0..3
-
-  // Number of quarters inclusive
-  const totalQuarters = (eYear - sYear) * 4 + (eQ - sQ) + 1;
-  if (totalQuarters <= 0) {
-    alert('End date must be the same as or after start date.');
-    return;
-  }
-
-  // FIXED TODAY (as per your examples) — change here if you want real 'today'
-  const today = makeDateUTC(2025, 11, 19); // 19-Nov-2025 UTC
-
-  // Prepare table rows
-  let rowsHTML = '';
-  let totalTax = 0;
-  let totalPenalty = 0;
-
-  for (let i = 0; i < totalQuarters; i++) {
-    // compute this quarter's year & quarter index
-    const qAbs = sQ + i;
-    const qYear = sYear + Math.floor(qAbs / 4);
-    const qIndex = qAbs % 4; // 0..3
-
-    // quarter start (UTC) per your new rule: days passed from quarter START
-    const qStart = quarterStartUTC(qYear, qIndex);
-
-    // Calculate days passed from quarter START to today
-    let msDiff = today.getTime() - qStart.getTime();
-    let daysPassed = Math.floor(msDiff / (1000 * 60 * 60 * 24));
-    if (daysPassed < 0) daysPassed = 0; // future quarter -> 0 days passed
-
-    // Determine penalty rate using slabs (based on daysPassed)
-    const penaltyRate = slabRateByDays(daysPassed);
-    const taxForQuarter = rate;
-    const penaltyAmount = Math.round(taxForQuarter * penaltyRate); // rounded to nearest rupee
-
-    totalTax += taxForQuarter;
-    totalPenalty += penaltyAmount;
-
-    const quarterLabel = `Q${qIndex + 1} ${qYear}`;
-    rowsHTML += `
+  // Build output table
+  let html = `
+  <table class="table table-bordered">
+    <thead class="table-light">
       <tr>
-        <td class="monospace">${quarterLabel}</td>
-        <td class="monospace">${qStart.toISOString().slice(0,10)}</td>
-        <td>${daysPassed}</td>
-        <td>${(penaltyRate * 100)}%</td>
-        <td class="monospace">${moneyFmt.format(penaltyAmount)}</td>
-        <td class="monospace">${moneyFmt.format(taxForQuarter)}</td>
+        <th>Quarter</th>
+        <th>Start Date</th>
+        <th>Days Late</th>
+        <th>Penalty %</th>
+        <th>Penalty Amount</th>
+        <th>Tax</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+  let totalTax = 0, totalPenalty = 0;
+
+  quarters.forEach(q => {
+    totalTax += q.tax;
+    totalPenalty += q.penalty;
+
+    html += `
+      <tr>
+        <td>Q${q.q} ${q.year}</td>
+        <td>${q.start}</td>
+        <td>${q.daysLate}</td>
+        <td>${q.penaltyRate}%</td>
+        <td>₹${q.penalty.toLocaleString()}</td>
+        <td>₹${q.tax.toLocaleString()}</td>
       </tr>
     `;
-  }
+  });
 
-  const grandTotal = totalTax + totalPenalty;
-
-  // Render output table + totals
-  output.innerHTML = `
-    <div class="table-responsive">
-      <table class="table table-sm table-bordered align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Quarter</th>
-            <th>Quarter Start</th>
-            <th>Days Passed (from quarter start → today)</th>
-            <th>Penalty %</th>
-            <th>Penalty Amount</th>
-            <th>Tax Amount (quarter)</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rowsHTML}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mt-3">
-      <p><strong>Total Quarters:</strong> ${totalQuarters}</p>
-      <p><strong>Tax per quarter:</strong> ${moneyFmt.format(RLW_RATES[rlw])}</p>
-      <p><strong>Total Tax:</strong> ${moneyFmt.format(totalTax)}</p>
-      <p><strong>Total Penalty:</strong> ${moneyFmt.format(totalPenalty)}</p>
-      <hr>
-      <h5 class="text-danger">Grand Total Payable: ${moneyFmt.format(grandTotal)}</h5>
-      <p class="text-muted mt-2 small">Calculation date (fixed): ${today.toISOString().slice(0,10)} — days are counted from each quarter's <em>start</em>.</p>
-    </div>
+  html += `
+    </tbody>
+  </table>
+  <h4>Total Tax: ₹${totalTax.toLocaleString()}</h4>
+  <h4>Total Penalty: ₹${totalPenalty.toLocaleString()}</h4>
+  <h3 class="text-danger">Total Payable: ₹${(totalTax + totalPenalty).toLocaleString()}</h3>
   `;
-}
 
-// Clear output on reset
-function clearOutput() {
-  document.getElementById('output').innerHTML = '';
+  output.innerHTML = html;
 }
 </script>
+
 </body>
 </html>
