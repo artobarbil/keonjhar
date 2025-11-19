@@ -93,48 +93,81 @@ function calculateTax() {
   let eY = endDate.getFullYear(), eQ = Math.floor(endDate.getMonth() / 3);
   const quarters = (eY - sY) * 4 + (eQ - sQ) + 1;
 
-  // FIXED today's date as per your instruction
+  // TODAY fixed as per your rule
   const today = new Date("2025-11-19");
-  const todayQ = Math.floor(today.getMonth() / 3);
-  const todayY = today.getFullYear();
 
   let totalTax = 0;
   let totalPenalty = 0;
 
+  let tableRows = "";
+
   for (let i = 0; i < quarters; i++) {
 
-    // Identify the quarter in the loop
+    // Identify quarter
     let qYear = sY + Math.floor((sQ + i) / 4);
     let qNumber = (sQ + i) % 4;
 
-    let taxForQuarter = rate;
+    // Quarter end dates
+    const quarterEndDates = [
+      new Date(qYear, 2, 31), // Q1 ends 31 March
+      new Date(qYear, 5, 30), // Q2 ends 30 June
+      new Date(qYear, 8, 30), // Q3 ends 30 September
+      new Date(qYear, 11, 31) // Q4 ends 31 December
+    ];
+
+    let quarterEnd = quarterEndDates[qNumber];
+
+    // Calculate delay from quarter end → today
+    let daysLate = Math.floor((today - quarterEnd) / (1000 * 60 * 60 * 24));
+    if (daysLate < 0) daysLate = 0;
+
+    // Penalty slab selection
     let penaltyRate = 0;
+    if (daysLate >= 15 && daysLate <= 30) penaltyRate = 0.25;
+    else if (daysLate >= 31 && daysLate <= 45) penaltyRate = 0.50;
+    else if (daysLate >= 46 && daysLate <= 60) penaltyRate = 1.00;
+    else if (daysLate > 60) penaltyRate = 2.00;
 
-    // RULES:
-    // Previous quarters → 200%
-    if (qYear < todayY || (qYear === todayY && qNumber < todayQ)) {
-      penaltyRate = 2.0; // 200%
-    }
-    // Current quarter → 100%
-    else if (qYear === todayY && qNumber === todayQ) {
-      penaltyRate = 1.0; // 100%
-    }
-    // Future quarters → 0%
-    else {
-      penaltyRate = 0;
-    }
-
+    let taxForQuarter = rate;
     let penalty = taxForQuarter * penaltyRate;
 
     totalTax += taxForQuarter;
     totalPenalty += penalty;
+
+    // Build table row
+    tableRows += `
+      <tr>
+        <td>Q${qNumber + 1} ${qYear}</td>
+        <td>${quarterEnd.toISOString().split("T")[0]}</td>
+        <td>${daysLate}</td>
+        <td>${(penaltyRate * 100)}%</td>
+        <td>₹${penalty}</td>
+      </tr>
+    `;
   }
 
   const grandTotal = totalTax + totalPenalty;
 
+  // Final Output
   output.innerHTML = `
+    <h5>Quarter-wise Penalty Breakdown</h5>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Quarter</th>
+          <th>Quarter End</th>
+          <th>Days Late</th>
+          <th>Penalty %</th>
+          <th>Penalty Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tableRows}
+      </tbody>
+    </table>
+
     <p><strong>Total Quarters:</strong> ${quarters}</p>
-    <p><strong>Tax per Quarter:</strong> ₹${rate}</p>
+    <p><strong>Tax Per Quarter:</strong> ₹${rate}</p>
     <p><strong>Total Tax:</strong> ₹${totalTax}</p>
     <p><strong>Total Penalty:</strong> ₹${totalPenalty}</p>
     <hr>
@@ -144,6 +177,8 @@ function calculateTax() {
 </script>
 
 
+
 </body>
 </html>
+
 
