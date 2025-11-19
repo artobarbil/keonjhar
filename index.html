@@ -5,36 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OTS Tax Calculator (HGV)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    body { background-color: #f9f9f9; }
-    .result-box { background-color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    @media print {
-      body * { visibility: hidden; }
-      #printSection, #printSection * { visibility: visible; }
-      #printSection { position: absolute; top: 0; left: 0; width: 100%; }
-    }
+    body { background:#f8f9fa; }
+    .result-box { background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 <div class="container mt-5">
   <h2 class="mb-4 text-center">🚛 OTS Tax Calculator (HGV)</h2>
 
-  <form id="taxForm" class="border rounded p-4 bg-white shadow-sm">
+  <form class="border rounded p-4 bg-white shadow-sm">
+
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="startDate" class="form-label">Tax From:</label>
-        <input type="date" class="form-control" id="startDate" max="2022-03-31" required>
+        <label class="form-label">Tax From:</label>
+        <input type="date" class="form-control" id="startDate" required>
       </div>
 
       <div class="col-md-6 mb-3">
-        <label for="endDate" class="form-label">Tax Up To:</label>
-        <input type="date" class="form-control" id="endDate" min="2024-03-31" required>
+        <label class="form-label">Tax Up To:</label>
+        <input type="date" class="form-control" id="endDate" required>
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="RLW" class="form-label">Select RLW (kg):</label>
+      <label class="form-label">Select RLW (kg):</label>
       <select class="form-select" id="RLW" required>
         <option value="">-- Select RLW --</option>
         <option value="16200">16200 kg</option>
@@ -60,14 +55,13 @@
 
     <div class="text-center">
       <button type="button" class="btn btn-primary me-2" onclick="calculateTax()">Calculate Tax</button>
-      <input type="reset" class="btn btn-secondary me-2" value="Reset">
-      <button type="button" class="btn btn-success" onclick="printResult()">🖨️ Print / Save as PDF</button>
+      <input type="reset" class="btn btn-secondary" value="Reset">
     </div>
   </form>
 
-  <div class="mt-4 result-box p-4 rounded" id="printSection">
+  <div class="mt-4 result-box">
     <h4>Result:</h4>
-    <div id="output" class="border rounded p-3 bg-light"></div>
+    <div id="output"></div>
   </div>
 </div>
 
@@ -79,72 +73,53 @@ function calculateTax() {
   const output = document.getElementById("output");
   output.innerHTML = "";
 
-  if (!rlw || !startDate || !endDate) {
-    alert("⚠️ Please fill all fields correctly before calculating.");
+  if (!rlw || !startDate || !endDate || startDate > endDate) {
+    alert("Please enter valid dates and RLW.");
     return;
   }
 
+  // RLW → Quarterly Tax Rate Mapping
   const rlwRates = {
     16200: 2610, 18500: 4750, 25000: 4750, 28000: 6500,
     31000: 6500, 35000: 8000, 37000: 9000, 42000: 11500,
-    43000: 12000, 47500: 14250, 49000: 15000,
-    35200: 8000, 39500: 10250, 40200: 10500,
-    44000: 12500, 45500: 13250, 54000: 17500, 55000: 18000
+    43000: 12000, 47500: 14250, 49000: 15000, 35200: 8000,
+    39500: 10250, 40200: 10500, 44000: 12500, 45500: 13250,
+    54000: 17500, 55000: 18000
   };
 
   const rate = rlwRates[rlw];
+
+  // Calculate number of quarters between start and end
+  let sY = startDate.getFullYear(), sQ = Math.floor(startDate.getMonth() / 3);
+  let eY = endDate.getFullYear(), eQ = Math.floor(endDate.getMonth() / 3);
+  const quarters = (eY - sY) * 4 + (eQ - sQ) + 1;
+
+  // Determine penalty based on delay
   const today = new Date();
+  const daysLate = Math.floor((today - endDate) / (1000 * 60 * 60 * 24));
 
-  // Quarter calculations
-  const monthsDiff = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-  const quarters = Math.floor(monthsDiff / 3 + 1);
+  let penaltyRate = 0;
+  if (daysLate >= 15 && daysLate < 30) penaltyRate = 0.25;
+  else if (daysLate >= 30 && daysLate < 45) penaltyRate = 0.50;
+  else if (daysLate >= 45 && daysLate < 60) penaltyRate = 1.00;
+  else if (daysLate >= 60) penaltyRate = 2.00;
 
-  const date2022 = new Date("2022-04-01");
-  const m = (endDate.getFullYear() - date2022.getFullYear()) * 12 + (endDate.getMonth() - date2022.getMonth());
-  const q = Math.floor(m / 3);
-  const q2 = Math.floor(((endDate.getFullYear() - today.getFullYear()) * 12 + (endDate.getMonth() - today.getMonth())) / 3 + 1);
+  const taxAmount = rate * quarters;
+  const penaltyAmount = taxAmount * penaltyRate;
+  const total = taxAmount + penaltyAmount;
 
-  // Late payment penalty
-  const nextQuarter = new Date(today.getFullYear(), Math.floor((today.getMonth() + 3) / 3) * 3, 1);
-  const daysLate = Math.round((today - nextQuarter) / (1000 * 60 * 60 * 24));
-  let cpenalty = 0;
-  if (daysLate > 15 && daysLate < 30) cpenalty = 0.25;
-  else if (daysLate < 45) cpenalty = 0.5;
-  else if (daysLate < 75) cpenalty = 1;
-  else if (daysLate < 92) cpenalty = 2;
-
-  // Calculations
-  const taxAmt = rate * quarters;
-  const penalty = (rate * (quarters - q2) * 2) + (rate * cpenalty);
-  const penaltyPayable = (rate * (q - q2) * 2) + (rate * cpenalty);
-  const diffQ = quarters - q;
-  const interest = diffQ > 0 ? (diffQ * rate) * 0.12 : 0;
-  const total = taxAmt + penaltyPayable + interest;
-
-  // Display results
   output.innerHTML = `
-    <p><strong>Number of Quarters:</strong> ${quarters}</p>
+    <p><strong>Quarters:</strong> ${quarters}</p>
     <p><strong>Tax per Quarter:</strong> ₹${rate}</p>
-    <p><strong>Tax Amount:</strong> ₹${taxAmt}</p>
-    <p><strong>Penalty:</strong> ₹${penalty}</p>
-    <p><strong>Waived Penalty:</strong> ₹${penalty - penaltyPayable}</p>
-    <p><strong>Payable Penalty:</strong> ₹${penaltyPayable}</p>
-    <p><strong>Tax & Penalty to Collect:</strong> ₹${taxAmt + penaltyPayable}</p>
-    <p><strong>Interest @12%:</strong> ₹${interest.toFixed(2)}</p>
+    <p><strong>Total Tax:</strong> ₹${taxAmount}</p>
+    <p><strong>Delay in Days:</strong> ${daysLate < 0 ? 0 : daysLate}</p>
+    <p><strong>Penalty Rate:</strong> ${(penaltyRate * 100)}%</p>
+    <p><strong>Penalty Amount:</strong> ₹${penaltyAmount}</p>
     <hr>
-    <h5 class="text-danger fw-bold"><strong>Total Payable: ₹${total.toFixed(2)}</strong></h5>
-    <p class="mt-3"><em>Calculated on: ${today.toLocaleDateString()}</em></p>
+    <h4 class="text-danger"><strong>Total Payable: ₹${total}</strong></h4>
   `;
 }
-
-function printResult() {
-  const result = document.getElementById("output").innerHTML.trim();
-  if (!result) {
-    alert("⚠️ Please calculate the tax before printing.");
-    return;
-  }
-  window.print();
-}
 </script>
+
 </body>
 </html>
